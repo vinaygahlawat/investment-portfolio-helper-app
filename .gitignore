@@ -1,0 +1,49 @@
+# General OS and Editor junk
+.DS_Store
+.Thumbs.db
+._*
+*.swp
+.vscode/
+.idea/
+*.log
+*.tmp
+
+# Node.js and npm
+node_modules/
+package-lock.json
+npm-debug.log*
+yarn.lock
+
+# React build output
+client/build/
+
+# Environment variables
+.env
+client/.env
+server/.env
+
+# Optional: Logs and temporary files from your server
+server/logs/
+server/tmp/
+
+# Optional: Dependencies installed via other package managers (if any)
+# bower_components/
+
+# Optional: Coverage reports
+coverage/
+client/coverage/
+server/coverage/
+
+# Optional: Compiled files (if you're using TypeScript or other compilers)
+client/dist/
+server/dist/
+out/
+
+# Optional: macOS folder attributes
+.AppleDouble
+
+# Optional: Docker related
+docker-compose.override.yml
+docker-compose.yml
+Dockerfile
+.dockerignore

@@ -1,0 +1,1 @@
+# A web app to help provide additional stock information that can help users manage their investment portfolio.
