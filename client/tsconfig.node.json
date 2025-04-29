@@ -5,7 +5,7 @@
     "lib": ["ES2023"],
     "module": "ESNext",
     "skipLibCheck": true,
-
+    "types": ["node"], // Add this line or include "node" in the existing array
     /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
