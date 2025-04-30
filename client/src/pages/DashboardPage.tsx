@@ -37,9 +37,9 @@ const DashboardPage: React.FC = () => {
   const { logout } = useAuth();
   const navigate = useNavigate();
   const [selectedTicker, setSelectedTicker] = useState<string | null>(null);
-  const [chartData, setChartData] = useState<
-    { name: string; price: number }[] | null
-  >(null);
+  const [chartData, setChartData] = useState<{ name: string; price: number }[]>(
+    []
+  );
 
   const handleLogout = () => {
     console.log("Dashboard Page: handleLogout called.");
@@ -53,6 +53,8 @@ const DashboardPage: React.FC = () => {
     let dataForTicker = null;
     if (ticker in hardcodedChartData) {
       dataForTicker = (hardcodedChartData as any)[ticker];
+    } else {
+      dataForTicker = [];
     }
     setChartData(dataForTicker);
     // TODO render chart based off of selected ticker
@@ -63,8 +65,8 @@ const DashboardPage: React.FC = () => {
       <h1>Dashboard Page</h1>
       {selectedTicker && <p>Selected Ticker: {selectedTicker}</p>}
       <TickerSelector onTickerSelect={handleTickerSelected} />
-      {chartData && <StockChart data={chartData} />}
-      {!chartData && selectedTicker && (
+      <StockChart data={chartData} />
+      {!chartData.length && selectedTicker && (
         <p>No Hardcoded Data Available For: {selectedTicker}</p>
       )}
       <button onClick={handleLogout}>Logout</button>
