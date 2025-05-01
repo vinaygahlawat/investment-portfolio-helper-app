@@ -9,7 +9,7 @@ import {
   Legend,
 } from "recharts";
 
-interface StockChartProps {
+export interface StockChartProps {
   data: { name: string; price: number }[];
 }
 
