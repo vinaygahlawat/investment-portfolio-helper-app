@@ -147,20 +147,6 @@ const TickerSelector: React.FC<TickerSelectorProps> = ({ onTickerSelect }) => {
       <button type="submit">Fetch Data</button>
     </form>
   );
-  // return (
-  //   <div>
-  //     <label htmlFor="tickerInput">Ticker:</label>{" "}
-  //     <input
-  //       type="text"
-  //       id="tickerInput"
-  //       placeholder="Enter ticker symbol"
-  //       value={inputValue}
-  //       onChange={handleInputChange}
-  //       onKeyDown={handleKeyDown}
-  //     />
-  //     <button onClick={handleSubmitTicker}>Fetch Ticker Data</button>
-  //   </div>
-  // );
 };
 
 export default TickerSelector;
