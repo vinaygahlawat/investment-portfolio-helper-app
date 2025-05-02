@@ -7,6 +7,7 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
+  Label,
 } from "recharts";
 
 export interface StockChartProps {
@@ -22,8 +23,23 @@ const StockChart: React.FC<StockChartProps> = ({ data }) => {
       margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
     >
       <CartesianGrid strokeDasharray="3 3" />
-      <XAxis />
-      <YAxis />
+      <XAxis angle={-90} textAnchor="end">
+        <Label
+          value="Date"
+          position="bottom"
+          offset={0}
+          style={{ textAnchor: "middle", transform: "translateX(20px)" }}
+        />
+      </XAxis>
+      <YAxis>
+        <Label
+          value="Step"
+          position="left"
+          angle={-90}
+          offset={0}
+          style={{ textAnchor: "middle" }}
+        />
+      </YAxis>
       <Tooltip />
       <Legend />
       <Line
