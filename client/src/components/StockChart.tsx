@@ -15,6 +15,26 @@ export interface StockChartProps {
 }
 
 const StockChart: React.FC<StockChartProps> = ({ data }) => {
+  if (!data || data.length === 0) {
+    return (
+      <div
+        style={{
+          width: 600,
+          height: 300,
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          border: "1px solid #ccc",
+        }}
+      >
+        <p style={{ fontWeight: "bold", marginBottom: "8px" }}>
+          No Data Available
+        </p>
+        <p>Please double-check the ticker symbol or try a different one.</p>
+      </div>
+    );
+  }
   return (
     <LineChart
       width={600}
@@ -47,6 +67,7 @@ const StockChart: React.FC<StockChartProps> = ({ data }) => {
         dataKey="price"
         stroke="#8884d8"
         activeDot={{ r: 8 }}
+        isAnimationActive={false}
       />
     </LineChart>
   );

@@ -26,9 +26,11 @@ const DashboardPage: React.FC = () => {
     <div>
       <h1>Dashboard Page</h1>
       <TickerSelector onTickerSelect={handleTickerSelected} />
-      {selectedTicker && <p>Selected Ticker: {selectedTicker}</p>}
-      {loading && <p>Loading data...</p>}
-      {error && <p>Error: {error}</p>}
+      <div style={{ display: "flex", alignItems: "center" }}>
+        {selectedTicker && <p>Selected Ticker: {selectedTicker}</p>}
+        {loading && <p> | Loading data...</p>}
+        {error && <p>Error: {error}</p>}
+      </div>
       <StockChart data={chartData} />
       {!chartData.length && selectedTicker && (
         <p>No Hardcoded Data Available For: {selectedTicker}</p>
