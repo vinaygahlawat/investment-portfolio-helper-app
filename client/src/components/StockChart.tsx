@@ -10,11 +10,11 @@ import {
   Label,
 } from "recharts";
 
-export interface StockChartProps {
-  data: { name: string; price: number }[];
+export interface StockChartStepProps {
+  data: { date: string; stepVal: number }[];
 }
 
-const StockChart: React.FC<StockChartProps> = ({ data }) => {
+const StockChart: React.FC<StockChartStepProps> = ({ data }) => {
   if (!data || data.length === 0) {
     return (
       <div
@@ -40,18 +40,17 @@ const StockChart: React.FC<StockChartProps> = ({ data }) => {
       width={600}
       height={300}
       data={data}
-      margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+      margin={{ top: 5, right: 30, left: 20, bottom: 50 }}
     >
       <CartesianGrid strokeDasharray="3 3" />
-      <XAxis angle={-90} textAnchor="end">
+      <XAxis angle={-45} textAnchor="end" dataKey="date">
         <Label
-          value="Date"
           position="bottom"
           offset={0}
-          style={{ textAnchor: "middle", transform: "translateX(20px)" }}
+          //   style={{ textAnchor: "middle", transform: "translateX(20px)" }}
         />
       </XAxis>
-      <YAxis>
+      <YAxis domain={["dataMin - 5", "dataMax + 5"]}>
         <Label
           value="Step"
           position="left"
@@ -64,10 +63,11 @@ const StockChart: React.FC<StockChartProps> = ({ data }) => {
       <Legend />
       <Line
         type="monotone"
-        dataKey="price"
+        dataKey="stepVal"
         stroke="#8884d8"
         activeDot={{ r: 8 }}
         isAnimationActive={false}
+        legendType="none"
       />
     </LineChart>
   );
