@@ -32,9 +32,6 @@ const DashboardPage: React.FC = () => {
         {error && <p>Error: {error}</p>}
       </div>
       <StockChart data={chartData} />
-      {!chartData.length && selectedTicker && (
-        <p>No Hardcoded Data Available For: {selectedTicker}</p>
-      )}
       <button onClick={handleLogout}>Logout</button>
     </div>
   );
