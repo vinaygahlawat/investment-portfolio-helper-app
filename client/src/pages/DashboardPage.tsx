@@ -27,7 +27,11 @@ const DashboardPage: React.FC = () => {
       <h1>Dashboard Page</h1>
       <TickerSelector onTickerSelect={handleTickerSelected} />
       <div style={{ display: "flex", alignItems: "center" }}>
-        {selectedTicker && <p>Selected Ticker: {selectedTicker}</p>}
+        <p>
+          {selectedTicker
+            ? `Selected Ticker: ${selectedTicker}`
+            : `Please enter a stock ticker.`}
+        </p>
         {loading && <p> | Loading data...</p>}
         {error && <p>Error: {error}</p>}
       </div>
