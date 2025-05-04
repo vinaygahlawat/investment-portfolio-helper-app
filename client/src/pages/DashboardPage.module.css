@@ -35,6 +35,7 @@
     grid-template-areas: "header header" "selector messages" "chart chart";
     gap: 24px;
     padding: 24px;
+    align-items: stretch;
   }
 
   .dashboardContainer > h1 {
@@ -43,6 +44,8 @@
 
   .tickerSelector {
     grid-area: selector;
+    display: flex;
+    align-items: center;
   }
 
   .messageContainer {
