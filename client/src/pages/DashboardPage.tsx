@@ -4,6 +4,7 @@ import { useAuth } from "../authContext";
 import TickerSelector from "../components/TickerSelector";
 import StockChart from "../components/StockChart";
 import useStockData from "../hooks/useStockData";
+import styles from "./DashboardPage.module.css";
 
 const DashboardPage: React.FC = () => {
   const { logout } = useAuth();
@@ -23,10 +24,10 @@ const DashboardPage: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className={styles.dashboardContainer}>
       <h1>Dashboard Page</h1>
       <TickerSelector onTickerSelect={handleTickerSelected} />
-      <div style={{ display: "flex", alignItems: "center" }}>
+      <div className={styles.messageContainer}>
         <p>
           {selectedTicker
             ? `Selected Ticker: ${selectedTicker}`
@@ -35,7 +36,9 @@ const DashboardPage: React.FC = () => {
         {loading && <p> | Loading data...</p>}
         {error && <p>Error: {error}</p>}
       </div>
-      <StockChart data={chartData} />
+      <div className={styles.chartContainer}>
+        <StockChart data={chartData} />
+      </div>
       <button onClick={handleLogout}>Logout</button>
     </div>
   );

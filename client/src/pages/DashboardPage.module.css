@@ -1,0 +1,59 @@
+/* DashboardPage CSS module */
+.dashboardContainer {
+  display: grid;
+  grid-template-columns: 1fr; /* Single column for mobile friendliness */
+  grid-template-rows: auto auto auto auto; /* Header, Selector, Messages, Chart */
+  gap: 16px;
+  padding: 16px;
+}
+
+.dashboardContainer > h1 {
+  grid-row: 1;
+}
+
+.dashboardContainer > div:nth-child(2) {
+  /* Targets the TickerSelector div */
+  grid-row: 2;
+}
+
+.messageContainer {
+  grid-row: 3;
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Space between loading and error messages */
+}
+
+.chartContainer {
+  grid-row: 4;
+  width: 100%; /* Make chart container take full width */
+}
+
+@media (min-width: 768px) {
+  .dashboardContainer {
+    grid-template-columns: auto 1fr; /* TickerSelector width adjusts, Chart takes remaining */
+    grid-template-rows: auto 1fr auto; /* Header, Main Content Area, Messages */
+    gap: 24px;
+    padding: 24px;
+  }
+
+  .dashboardContainer > h1 {
+    grid-row: 1;
+    grid-column: 1 / -1; /* Span across both columns */
+  }
+
+  .dashboardContainer > div:nth-child(2) {
+    grid-row: 2;
+    grid-column: 1;
+  }
+
+  .messageContainer {
+    grid-row: 3;
+    grid-column: 1 / -1; /* Span across both columns */
+    justify-content: flex-start; /* Adjust message alignment on wider screens */
+  }
+
+  .chartContainer {
+    grid-row: 2;
+    grid-column: 2;
+  }
+}
