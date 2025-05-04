@@ -2,13 +2,17 @@ import React, { useEffect, useRef, useState } from "react";
 
 interface TickerSelectorProps {
   onTickerSelect: (ticker: string) => void;
+  className?: string;
 }
 
 interface Suggestion {
   symbol: string;
   company_name: string;
 }
-const TickerSelector: React.FC<TickerSelectorProps> = ({ onTickerSelect }) => {
+const TickerSelector: React.FC<TickerSelectorProps> = ({
+  onTickerSelect,
+  className,
+}) => {
   const [inputValue, setInputValue] = useState("");
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -104,7 +108,7 @@ const TickerSelector: React.FC<TickerSelectorProps> = ({ onTickerSelect }) => {
   }, [activeSuggestionIndex, suggestions]);
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className={className}>
       <input
         type="text"
         placeholder="Enter stock ticker symbol"

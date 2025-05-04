@@ -26,7 +26,10 @@ const DashboardPage: React.FC = () => {
   return (
     <div className={styles.dashboardContainer}>
       <h1>Dashboard Page</h1>
-      <TickerSelector onTickerSelect={handleTickerSelected} />
+      <TickerSelector
+        onTickerSelect={handleTickerSelected}
+        className={styles.tickerSelector}
+      />
       <div className={styles.messageContainer}>
         <p>
           {selectedTicker

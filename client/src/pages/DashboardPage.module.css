@@ -11,9 +11,9 @@
   grid-row: 1;
 }
 
-.dashboardContainer > div:nth-child(2) {
-  /* Targets the TickerSelector div */
+.tickerSelector {
   grid-row: 2;
+  grid-column: 1;
 }
 
 .messageContainer {
@@ -32,28 +32,28 @@
   .dashboardContainer {
     grid-template-columns: auto 1fr; /* TickerSelector width adjusts, Chart takes remaining */
     grid-template-rows: auto 1fr auto; /* Header, Main Content Area, Messages */
+    grid-template-areas: "header header" "selector messages" "chart chart";
     gap: 24px;
     padding: 24px;
   }
 
   .dashboardContainer > h1 {
-    grid-row: 1;
-    grid-column: 1 / -1; /* Span across both columns */
+    grid-area: header;
   }
 
-  .dashboardContainer > div:nth-child(2) {
-    grid-row: 2;
-    grid-column: 1;
+  .tickerSelector {
+    grid-area: selector;
   }
 
   .messageContainer {
-    grid-row: 3;
-    grid-column: 1 / -1; /* Span across both columns */
+    grid-area: messages;
+    display: flex;
+    align-items: center;
+    gap: 8px;
     justify-content: flex-start; /* Adjust message alignment on wider screens */
   }
 
   .chartContainer {
-    grid-row: 2;
-    grid-column: 2;
+    grid-area: chart;
   }
 }
