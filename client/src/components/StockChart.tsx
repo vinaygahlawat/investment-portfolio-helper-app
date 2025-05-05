@@ -1,4 +1,5 @@
 import React from "react";
+import { StockChartStepProps } from "../types/interfaces";
 import {
   LineChart,
   Line,
@@ -9,10 +10,6 @@ import {
   Legend,
   Label,
 } from "recharts";
-
-export interface StockChartStepProps {
-  data: { date: string; stepVal: number }[];
-}
 
 const StockChart: React.FC<StockChartStepProps> = ({ data }) => {
   if (!data || data.length === 0) {

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { StockChartStepProps } from "../components/StockChart";
-import hardcodedChartData from "../data/hardcodedStockData";
+import { StockChartStepProps } from "../types/interfaces";
+import { getStockStepData } from "../services/stockStepService";
 
 const useStockData = (ticker: string | null) => {
   const [data, setData] = useState<StockChartStepProps["data"]>([]);
@@ -16,19 +16,9 @@ const useStockData = (ticker: string | null) => {
     setLoading(true);
     setError(null);
 
-    const fetchData = (): Promise<StockChartStepProps["data"]> => {
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          const result: StockChartStepProps["data"] =
-            hardcodedChartData[ticker] || [];
-          resolve(result);
-        }, 500);
-      });
-    };
-
-    fetchData()
+    getStockStepData(ticker)
       .then((result) => {
-        setData(result as StockChartStepProps["data"]);
+        setData(result);
         setLoading(false);
       })
       .catch((error) => {
