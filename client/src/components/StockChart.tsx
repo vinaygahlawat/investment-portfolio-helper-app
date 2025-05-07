@@ -1,5 +1,5 @@
 import React from "react";
-import { StockChartStepProps } from "../types/interfaces";
+import { StockChartStepProps } from "../../../types/interfaces";
 import {
   LineChart,
   Line,

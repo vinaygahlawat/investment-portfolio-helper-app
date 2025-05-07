@@ -1,4 +1,4 @@
-import { StockChartStepProps } from "../../types/interfaces";
+import { StockChartStepProps } from "../../../types/interfaces";
 
 const hardcodedStepData: Record<string, StockChartStepProps | undefined> = {
   NVDA: {

@@ -1,20 +1,28 @@
 import { StockChartStepProps } from "../../../types/interfaces";
-import hardcodedStepData from "./data/hardcodedStockStepData";
 
+const API_BASE_URL = `http://127.0.0.1:5001/api`;
 export const getStockStepData = async (
   ticker: string
-): Promise<StockChartStepProps["data"]> => {
-  // TODO For now, simulating API call with a delay and hardcoded data.
-  // Remove in favor of actual call.
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      console.log(`Simulated data fetched for ${ticker}.`);
-      const dataForTicker = hardcodedStepData[ticker];
-      if (dataForTicker) {
-        resolve(dataForTicker.data);
-      } else {
-        reject(new Error(`No hardcoded data found for ${ticker}.`));
-      }
-    }, 2000);
-  });
+): Promise<StockChartStepProps[]> => {
+  try {
+    console.log(`Data fetch initiated for ${ticker}.`);
+    const response = await fetch(`${API_BASE_URL}/stocks/steps/${ticker}`);
+    console.log(`Data fetched for ${API_BASE_URL}/stocks/steps/${ticker}.`);
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(
+        `Failed to fetch stock data: ${response.status} - ${
+          errorData?.message || response.statusText
+        }`
+      );
+    }
+
+    const dataForTicker: { data: StockChartStepProps[] } =
+      await response.json();
+    return dataForTicker.data;
+  } catch (error) {
+    console.error(`Error fetching stock data: ${error}.`);
+    throw error;
+  }
 };
