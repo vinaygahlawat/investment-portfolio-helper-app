@@ -1,4 +1,4 @@
-import { StockChartStepProps } from "../types/interfaces";
+import { StockChartStepProps } from "../../../types/interfaces";
 import hardcodedStepData from "./data/hardcodedStockStepData";
 
 export const getStockStepData = async (
