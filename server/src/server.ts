@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express";
+import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
 import hardcodedStepData from "./data/hardcodedStockStepData";
 import hardcodedUsers from "./data/hardcodedUsers";
@@ -13,6 +13,38 @@ interface User {
 export interface Users {
   [username: string]: User | undefined; // Allows any string as key, value is User or undefined
 }
+
+interface AuthRequest extends Request {
+  userId?: string;
+}
+
+const authMiddleware = (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  const authHeader = req.headers.authorization;
+
+  if (authHeader && authHeader.startsWith("Bearer ")) {
+    const token = authHeader.split(" ")[1];
+
+    if (!token) {
+      return res.status(401).json({ message: "No token provided." });
+    }
+
+    try {
+      const decoded = jwt.verify(token, JWT_SECRET) as { userId: string };
+      req.userId = decoded.userId;
+      next();
+    } catch (err) {
+      return res.status(401).json({ message: "Invalid token." });
+    }
+  } else {
+    return res.status(401).json({ message: "Not authorized." });
+  }
+};
+
+export default authMiddleware;
 
 const app = express();
 const port: number = parseInt(process.env.port || "5001", 10);
@@ -29,16 +61,20 @@ app.get("/test", (req: Request, res: Response) => {
   res.send("Test endpoint works (w/ CORS)!");
 });
 
-app.get("/api/stocks/steps/:ticker", (req: Request, res: Response) => {
-  const ticker = req.params.ticker.toUpperCase();
-  const stepDataForTicker = hardcodedStepData[ticker];
+app.get(
+  "/api/stocks/steps/:ticker",
+  authMiddleware as express.RequestHandler,
+  (req: Request, res: Response) => {
+    const ticker = req.params.ticker.toUpperCase();
+    const stepDataForTicker = hardcodedStepData[ticker];
 
-  if (stepDataForTicker) {
-    res.status(200).json(stepDataForTicker);
-  } else {
-    res.status(404).json({ message: `No data found for ${ticker}.` });
+    if (stepDataForTicker) {
+      res.status(200).json(stepDataForTicker);
+    } else {
+      res.status(404).json({ message: `No data found for ${ticker}.` });
+    }
   }
-});
+);
 
 app.post("/api/auth/login", async (req: Request, res: Response) => {
   const { username, password } = req.body;
