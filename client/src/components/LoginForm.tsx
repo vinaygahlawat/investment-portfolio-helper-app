@@ -28,7 +28,7 @@ function LoginForm() {
         login(token);
       } else {
         const errorData = await response.json();
-        setErrorMessage(errorData || "Login Failed.");
+        setErrorMessage(errorData.message || "Login Failed.");
       }
     } catch (error) {
       setErrorMessage("Network error. Please try again.");
