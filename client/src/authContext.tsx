@@ -17,16 +17,15 @@ const AuthContext = createContext<AuthContextType>({
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(
-    localStorage.getItem("authToken") ? true : false
-  );
   const [authToken, setAuthToken] = useState<string | null>(
     localStorage.getItem("authToken")
   );
+  const [isLoggedIn, setIsLoggedIn] = useState(!!authToken);
 
   const login = (token: string) => {
     console.log("AuthContext: Logging in.");
     localStorage.setItem("authToken", token);
+    setAuthToken(token);
     setIsLoggedIn(true);
   };
 

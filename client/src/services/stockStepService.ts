@@ -2,11 +2,18 @@ import { StockChartStepProps } from "../../../types/interfaces";
 
 const API_BASE_URL = `http://127.0.0.1:5001/api`;
 export const getStockStepData = async (
-  ticker: string
+  ticker: string,
+  authToken: string | null
 ): Promise<StockChartStepProps[]> => {
   try {
     console.log(`Data fetch initiated for ${ticker}.`);
-    const response = await fetch(`${API_BASE_URL}/stocks/steps/${ticker}`);
+    const response = await fetch(`${API_BASE_URL}/stocks/steps/${ticker}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
     console.log(`Data fetched for ${API_BASE_URL}/stocks/steps/${ticker}.`);
 
     if (!response.ok) {

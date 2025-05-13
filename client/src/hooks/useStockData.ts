@@ -7,7 +7,10 @@ interface UseStockDataResult {
   loading: boolean;
   error: string | null;
 }
-const useStockData = (ticker: string | null): UseStockDataResult => {
+const useStockData = (
+  ticker: string | null,
+  authToken: string | null
+): UseStockDataResult => {
   const [data, setData] = useState<StockChartStepProps[] | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -17,7 +20,7 @@ const useStockData = (ticker: string | null): UseStockDataResult => {
       setLoading(true);
       setError(null);
       try {
-        const stepData = await getStockStepData(ticker);
+        const stepData = await getStockStepData(ticker, authToken);
         setData(stepData);
         setLoading(false);
       } catch (err: unknown) {

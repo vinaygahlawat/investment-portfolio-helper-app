@@ -88,6 +88,7 @@ app.post("/api/auth/login", async (req: Request, res: Response) => {
         const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "1h" });
         res.status(200).json({
           message: `User ${username} logged in successfully. Token: ${token}`,
+          token: token,
         });
       } else {
         res.status(401).json({ message: `Invalid credentials.` });

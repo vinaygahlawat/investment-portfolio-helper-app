@@ -7,10 +7,14 @@ import useStockData from "../hooks/useStockData";
 import styles from "./DashboardPage.module.css";
 
 const DashboardPage: React.FC = () => {
-  const { logout } = useAuth();
+  const { logout, authToken } = useAuth();
   const navigate = useNavigate();
   const [selectedTicker, setSelectedTicker] = useState<string | null>(null);
-  const { data: chartData, loading, error } = useStockData(selectedTicker);
+  const {
+    data: chartData,
+    loading,
+    error,
+  } = useStockData(selectedTicker, authToken);
 
   const handleLogout = () => {
     console.log("Dashboard Page: handleLogout called.");
