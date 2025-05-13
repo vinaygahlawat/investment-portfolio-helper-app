@@ -3,8 +3,8 @@ import { useAuth } from "../authContext";
 
 function LoginForm() {
   const API_BASE_URL = `http://127.0.0.1:5001/api`;
-  const [username, setUsername] = useState(" ");
-  const [password, setPassword] = useState(" ");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState(" ");
   const { login } = useAuth();
 
