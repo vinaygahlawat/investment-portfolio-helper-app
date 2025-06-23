@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node dist/server.js",
     "dev": "nodemon src/server.ts",
-    "build": "tsc"
+    "build": "tsc",
+    "seed": "ts-node prisma/seed.ts"
   },
   "keywords": [],
   "author": "",
@@ -18,10 +19,12 @@
     "@types/jsonwebtoken": "^9.0.9",
     "@types/node": "^22.15.14",
     "nodemon": "^3.1.10",
+    "prisma": "^6.9.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
   },
   "dependencies": {
+    "@prisma/client": "^6.9.0",
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
     "express": "^5.1.0",

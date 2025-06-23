@@ -1,9 +1,9 @@
 import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
-import hardcodedStepData from "./data/hardcodedStockStepData";
 import hardcodedUsers from "./data/hardcodedUsers";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { PrismaClient } from "@prisma/client";
 
 interface User {
   _id: string;
@@ -53,6 +53,8 @@ const hostname = "127.0.0.1"; // TODO MVP Pull appropriate hostname from env
 // TODO MVP Create more cryptographically challenging secret and store securely in env variable.
 const JWT_SECRET = "my_jwt_secret";
 
+const prisma = new PrismaClient();
+
 // TODO MVP Configure cors() middleware with appropriate parameters.
 app.use(cors());
 app.use(express.json());
@@ -64,14 +66,53 @@ app.get("/test", (req: Request, res: Response) => {
 app.get(
   "/api/stocks/steps/:ticker",
   authMiddleware as express.RequestHandler,
-  (req: Request, res: Response) => {
+  async (req: Request, res: Response) => {
     const ticker = req.params.ticker.toUpperCase();
-    const stepDataForTicker = hardcodedStepData[ticker];
+    // const stepDataForTicker = hardcodedStepData[ticker];
+    try {
+      console.log(`GET request for ${ticker} stock steps...`);
+      const stepDataForTicker = await prisma.stock.findUnique({
+        where: { ticker: ticker },
+        include: { stepValues: { orderBy: { date: "asc" } } },
+      });
 
-    if (stepDataForTicker) {
-      res.status(200).json(stepDataForTicker);
-    } else {
-      res.status(404).json({ message: `No data found for ${ticker}.` });
+      if (stepDataForTicker) {
+        console.log(
+          `Step data for ${ticker}: `,
+          JSON.stringify(stepDataForTicker, null, 2)
+        );
+
+        const transformedTickerStepData: { date: string; stepVal: number }[] =
+          [];
+        if (
+          stepDataForTicker.stepValues &&
+          Array.isArray(stepDataForTicker.stepValues)
+        ) {
+          for (const step of stepDataForTicker.stepValues) {
+            const datestep = {
+              date: step.date.toISOString().split("T")[0],
+              stepVal: step.stepValue,
+            };
+
+            transformedTickerStepData.push(datestep);
+          }
+        }
+
+        const finalResponseObject = {
+          data: transformedTickerStepData,
+        };
+
+        console.log(
+          `Final response object step data for ${ticker}: `,
+          JSON.stringify(finalResponseObject, null, 2)
+        );
+        res.status(200).json(finalResponseObject);
+      } else {
+        res.status(404).json({ message: `No data found for ${ticker}.` });
+      }
+    } catch (error) {
+      console.error(`Error fetching stock ${ticker}: `, error);
+      res.status(500).json({ message: "Internal server error" });
     }
   }
 );
@@ -103,4 +144,21 @@ app.post("/api/auth/login", async (req: Request, res: Response) => {
 
 app.listen(port, hostname, () => {
   console.log(`Server listening on http://${hostname}:${port}...`);
+});
+
+process.on("beforeExit", async () => {
+  console.log("Disconnecting Prisma Client...");
+  await prisma.$disconnect();
+});
+
+// Handle unexpected shutdown (e.g. Ctrl+C)
+process.on("SIGINT", async () => {
+  console.log("SIGINT received. Disconnecting Prisma Client...");
+  await prisma.$disconnect();
+  process.exit(0);
+});
+
+// Handle unhandled rejections
+process.on("unhandledRejection", (reason, promise) => {
+  console.error("Unhandled Rejection at: ", promise, "reason:", reason);
 });

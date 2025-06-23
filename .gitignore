@@ -51,3 +51,10 @@ Dockerfile
 # --- Vite Specific ---
 client/.vite/
 client/.cache/
+
+# Server-specific ignores
+/server/node_modules/
+/server/.env
+/server/src/data/*.db        # If you put your db file in server/data/
+/server/prisma/migrations/ # Usually best to ignore generated migration files (keep schema.prisma only)
+/server/src/generated/prisma
