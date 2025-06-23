@@ -3,7 +3,8 @@ import cors from "cors";
 import hardcodedUsers from "./data/hardcodedUsers";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "./lib/prisma";
+import { StockRepository } from "./repositories/stock.repository";
 
 interface User {
   _id: string;
@@ -53,7 +54,7 @@ const hostname = "127.0.0.1"; // TODO MVP Pull appropriate hostname from env
 // TODO MVP Create more cryptographically challenging secret and store securely in env variable.
 const JWT_SECRET = "my_jwt_secret";
 
-const prisma = new PrismaClient();
+const stockRepository = new StockRepository(prisma);
 
 // TODO MVP Configure cors() middleware with appropriate parameters.
 app.use(cors());
@@ -68,13 +69,11 @@ app.get(
   authMiddleware as express.RequestHandler,
   async (req: Request, res: Response) => {
     const ticker = req.params.ticker.toUpperCase();
-    // const stepDataForTicker = hardcodedStepData[ticker];
     try {
-      console.log(`GET request for ${ticker} stock steps...`);
-      const stepDataForTicker = await prisma.stock.findUnique({
-        where: { ticker: ticker },
-        include: { stepValues: { orderBy: { date: "asc" } } },
-      });
+      console.log(
+        `GET request for ${ticker} stock steps (fetching from stock repository)...`
+      );
+      const stepDataForTicker = await stockRepository.getStockByTicker(ticker);
 
       if (stepDataForTicker) {
         console.log(
@@ -93,7 +92,6 @@ app.get(
               date: step.date.toISOString().split("T")[0],
               stepVal: step.stepValue,
             };
-
             transformedTickerStepData.push(datestep);
           }
         }
